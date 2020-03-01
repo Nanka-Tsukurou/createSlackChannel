@@ -9,6 +9,7 @@ logger = getLogger(__name__)
 
 client = slack.WebClient(token=os.environ['SLACK_API_TOKEN'])
 post_channel = os.environ['POST_CHANNEL']
+message = 'エラーが発生しました'
 
 def create_new_channels():
     dt_now = datetime.datetime.now()
