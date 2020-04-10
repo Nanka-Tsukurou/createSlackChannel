@@ -1,9 +1,11 @@
 # createSlackChannel
 [処理概要]
 
-・チャンネル（＃YYYY-MM）を新規作成
+・チャンネル（#YYYY-MM）を新規作成
 
 ・ワークスペースの全参加者をjoin
+
+・3か月以上前の#YYYY-MMをアーカイブ
 
 [実行方法]
 
