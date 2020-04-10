@@ -13,7 +13,7 @@ def archive_old_channels(client) -> str:
     conversations_list = client.conversations_list()
     assert conversations_list['ok'],'チャンネル一覧の取得に失敗しました'
 
-    pattern = '\d{4}-\d{2}' #YYYY-MM形式
+    pattern = '#\d{4}-\d{2}' #YYYY-MM形式
     channels = conversations_list['channels']
 
     for channel in channels:
