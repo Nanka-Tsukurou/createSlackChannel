@@ -11,6 +11,9 @@ import create_new_channel
 logger = getLogger(__name__)
 message = 'エラーが発生しました'
 
+client = slack.WebClient(token=os.environ['SLACK_API_TOKEN'])
+post_channel = os.environ['POST_CHANNEL']
+
 def handler(event, lambda_context):
     try:
         message_create = create_new_channel.create_new_channel(client)
