@@ -1,0 +1,7 @@
+dist/
+*.sh
+*.zip
+src/example*
+createSlackChannel/*
+handler.py
+
