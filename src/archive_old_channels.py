@@ -3,11 +3,13 @@ import slack
 import datetime
 import time
 from dateutil.relativedelta import relativedelta
-from logging import getLogger
+import logging
 import re
 
 def archive_old_channels(client) -> str:
-    message = 'アーカイブ対象はありませんでした'
+    logging.basicConfig(format='%(asctime)s [%(levelname)s] %(message)s', level=logging.INFO)
+    logging.info('Start archive process.')
+
     dt_now = datetime.datetime.now()
     new_channel_name = datetime.datetime.strftime(dt_now + relativedelta(months=1), '%Y-%m')
     conversations_list = client.conversations_list()
@@ -16,6 +18,7 @@ def archive_old_channels(client) -> str:
     pattern = '#\d{4}-\d{2}' #YYYY-MM形式
     channels = conversations_list['channels']
 
+    message = 'アーカイブ対象はありませんでした'
     for channel in channels:
         archive_channel_name = channel['name']
         archive_channel_id = channel['id']
@@ -27,8 +30,11 @@ def archive_old_channels(client) -> str:
             #2020-01は、2020/04/01起動時にアーカイブされる
             if dt_archive_channel.replace(day=1,hour=0,minute=0,second=0,microsecond=0) + relativedelta(months=3) < dt_now:
                 client.conversations_archive(channel=archive_channel_id)
+                assert conversations_list['ok'],'チャンネルのアーカイブに失敗しました'
+                logging.info('Channel' + archive_channel_name + 'has been archived.')
                 message = archive_channel_name + 'をアーカイブしたよー'
-    
+
+    logging.info('Finish archive process.')
     return message
 
 if __name__ == "__main__":

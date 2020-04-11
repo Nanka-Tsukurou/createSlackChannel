@@ -4,29 +4,37 @@ import slack
 import datetime
 import time
 from dateutil.relativedelta import relativedelta
-from logging import getLogger
+import logging
 
 def create_new_channel(client) -> str:
+    logging.basicConfig(format='%(asctime)s [%(levelname)s] %(message)s', level=logging.INFO)
+    logging.info('Start create channel process.')
+    
     message = 'エラーが発生しました'
     dt_now = datetime.datetime.now()
     new_channel_name = datetime.datetime.strftime(dt_now + relativedelta(months=1), '%Y-%m')
     conversations_list = client.conversations_list()
     assert conversations_list['ok'],'チャンネル一覧の取得に失敗しました'
+    logging.info('Successfully got channel list.')
+
 
     is_channel_exists = False
     channels = conversations_list['channels'] 
     for channel in channels:
         if channel['name'] == new_channel_name:
+            logging.info('#' + new_channel_name + ' is searched.')
             is_channel_exists = True
             break
 
     if is_channel_exists == True:
+        logging.info('#' +new_channel_name + ' is already exists.')
         message = '#' + new_channel_name + 'は作成済みだよー'
     else:
-        message = '#' + new_channel_name + 'を作成したよー'
+        logging.info(new_channel_name + ' is not exists. Start creating.')
         new_channel = client.channels_create(name=new_channel_name)
         assert new_channel['ok'],'チャンネルの作成に失敗しました'
-
+        message = '#' + new_channel_name + 'を作成したよー'
+        
         users_list = client.users_list()
         assert users_list['ok'],'ユーザー一覧の取得に失敗しました'
         
@@ -50,7 +58,10 @@ def create_new_channel(client) -> str:
             
             ret = client.channels_invite(channel=new_channel['channel']['id'],user=user['id'])
             assert ret['ok'],'ユーザーの招待に失敗しました' + '(' + user['name'] + ')'
+
+        logging.info('Users are successfully invited.')
     
+    logging.info('Finish create channel process.')
     return message
  
 if __name__ == "__main__":
