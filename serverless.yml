@@ -25,32 +25,17 @@ provider:
   runtime: python3.8
   stage: prod
   region: us-east-1
-  deploymentBucket: ${ssm:sls_deployment_bucket}
+  deploymentBucket: ${file(./myCustomFile.yml):deployment_bucket}
   logRetentionInDays: 7
   timeout: 60
   memorySize: 128
   environment:
     TZ: Asia/Tokyo
-    SLACK_TOKEN: ${ssm:slack_token}
-    POST_CHANNEL: ${ssm:post_channel}
-    EXEC_USER_ID: ${ssm:exec_user_id}
+    SLACK_TOKEN: ${file(./myCustomFile.yml):slack_token}
+    POST_CHANNEL: ${file(./myCustomFile.yml):post_channel}
+    EXEC_USER_ID: ${file(./myCustomFile.yml):exec_user_id}
 
-# you can add statements to the Lambda function's IAM Role here
-  iamRoleStatements:
-    - Effect: "Allow"
-      Action:
-        - "s3:ListBucket"
-      Resource: { "Fn::Join" : ["", ["arn:aws:s3:::", { "Ref" : "ServerlessDeploymentBucket" } ] ]  }
-    - Effect: "Allow"
-      Action:
-        - "s3:PutObject"
-      Resource:
-        Fn::Join:
-          - ""
-          - - "arn:aws:s3:::"
-            - "Ref" : "ServerlessDeploymentBucket"
-            - "/*"
-
+custom: ${file(../myCustomFile.yml)}
 # you can define service wide environment variables here
 #  environment:
 #    variable1: value1
@@ -67,9 +52,10 @@ package:
     - src/example.log
     - src/example.py
     - lambda_function.zip
+    - myCustomFile.yml
   plugins:
-  - serverless-python-requirements
-  - serverless-prune-plugin
+    - serverless-python-requirements
+    - serverless-prune-plugin
 
 functions:
   main:
