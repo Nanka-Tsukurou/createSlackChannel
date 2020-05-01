@@ -17,7 +17,9 @@
 ```
 [デプロイ]
 1.git clone
+
 2.AWS S3バケットを作成（任意の名前）
+
 3./createSlackChannel/myCustomfile.ymlを作成し、以下を記載
 ```
 slack_token: <slackのトークン>
