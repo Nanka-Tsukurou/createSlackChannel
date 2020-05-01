@@ -5,4 +5,4 @@ dist/
 src/example*
 createSlackChannel/*
 handler.py
-
+node_modules
