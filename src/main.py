@@ -28,4 +28,4 @@ def handler(event, lambda_context):
         raise e 
         
 if __name__ == "__main__":
-    handler('event','lambda_context')
+    handler('event', 'lambda_context')
