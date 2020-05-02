@@ -4,33 +4,38 @@ import slack
 import datetime
 import time
 from dateutil.relativedelta import relativedelta
-import logging
+from logging import getLogger,StreamHandler,Formatter,DEBUG,INFO,WARNING,ERROR,CRITICAL
+
+logger = getLogger(__name__)
+logger.setLevel(DEBUG)
+loghandler = StreamHandler()
+loghandler.setFormatter(Formatter("%(asctime)s %(levelname)8s %(message)s"))
+logger.addHandler(loghandler)
 
 def create_new_channel(client) -> str:
-    logging.basicConfig(format='%(asctime)s [%(levelname)s] %(message)s', level=logging.INFO)
-    logging.info('Start create channel process.')
+    logger.info('Start create channel process.')
     
     message = 'エラーが発生しました'
     dt_now = datetime.datetime.now()
     new_channel_name = datetime.datetime.strftime(dt_now + relativedelta(months=1), '%Y-%m')
     conversations_list = client.conversations_list()
     assert conversations_list['ok'],'チャンネル一覧の取得に失敗しました'
-    logging.info('Successfully got channel list.')
+    logger.info('Successfully got channel list.')
 
 
     is_channel_exists = False
     channels = conversations_list['channels'] 
     for channel in channels:
         if channel['name'] == new_channel_name:
-            logging.info('#' + new_channel_name + ' is searched.')
+            logger.info('#' + new_channel_name + ' is searched.')
             is_channel_exists = True
             break
 
     if is_channel_exists == True:
-        logging.info('#' +new_channel_name + ' is already exists.')
+        logger.info('#' +new_channel_name + ' is already exists.')
         message = '#' + new_channel_name + 'は作成済みだよー'
     else:
-        logging.info(new_channel_name + ' is not exists. Start creating.')
+        logger.info(new_channel_name + ' is not exists. Start creating.')
         new_channel = client.channels_create(name=new_channel_name)
         assert new_channel['ok'],'チャンネルの作成に失敗しました'
         message = '#' + new_channel_name + 'を作成したよー'
@@ -59,9 +64,9 @@ def create_new_channel(client) -> str:
             ret = client.channels_invite(channel=new_channel['channel']['id'],user=user['id'])
             assert ret['ok'],'ユーザーの招待に失敗しました' + '(' + user['name'] + ')'
 
-        logging.info('Users are successfully invited.')
+        logger.info('Users are successfully invited.')
     
-    logging.info('Finish create channel process.')
+    logger.info('Finish create channel process.')
     return message
  
 if __name__ == "__main__":

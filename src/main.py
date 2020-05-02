@@ -4,17 +4,20 @@ import slack
 import datetime
 import time
 from dateutil.relativedelta import relativedelta
-import logging
+from logging import getLogger,StreamHandler,Formatter,DEBUG,INFO,WARNING,ERROR,CRITICAL
 import src.create_new_channel as create_new_channel
 import src.archive_old_channels as archive_old_channels
 
+logger = getLogger(__name__)
+logger.setLevel(DEBUG)
+loghandler = StreamHandler()
+loghandler.setFormatter(Formatter("%(asctime)s %(levelname)8s %(message)s"))
+logger.addHandler(loghandler)
 
-logging.basicConfig(format='%(asctime)s [%(levelname)s] %(message)s', level=logging.INFO)
-
-logging.info('Start processing.')
+logger.info('Start processing.')
 client = slack.WebClient(token=os.environ['SLACK_API_TOKEN'])
 post_channel = os.environ['POST_CHANNEL']
-logging.info('Successfully read environmental variables.')
+logger.info('Successfully read environmental variables.')
 
 def handler(event, lambda_context):
     try:
@@ -22,10 +25,10 @@ def handler(event, lambda_context):
         client.chat_postMessage(channel=post_channel, text=message_create)
         message_archive = archive_old_channels.archive_old_channels(client)
         client.chat_postMessage(channel=post_channel, text=message_archive)
-        logging.info('Finish processing.')
+        logger.info('Finish processing.')
 
     except Exception as e:
-        logging.error('An Error has occurred.')
+        logger.error('An Error has occurred.')
         raise e 
         
 if __name__ == "__main__":
