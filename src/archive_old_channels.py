@@ -39,7 +39,7 @@ def archive_old_channels(client) -> str:
                 client.conversations_archive(channel=archive_channel_id)
                 assert conversations_list['ok'],'チャンネルのアーカイブに失敗しました'
                 logger.info('channel name : #' + archive_channel_name + ' has been archived.')
-                message = archive_channel_name + 'をアーカイブしたよー'
+                message = '#' + archive_channel_name + 'をアーカイブしたよー'
 
     logger.info('Finish archive process.')
     return message
