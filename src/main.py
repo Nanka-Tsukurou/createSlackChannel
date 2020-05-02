@@ -5,8 +5,8 @@ import datetime
 import time
 from dateutil.relativedelta import relativedelta
 import logging
-import .create_new_channel
-import .archive_old_channels
+import src.create_new_channel as create_new_channel
+import src.archive_old_channels as archive_old_channels
 
 
 logging.basicConfig(format='%(asctime)s [%(levelname)s] %(message)s', level=logging.INFO)

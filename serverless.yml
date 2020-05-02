@@ -11,7 +11,7 @@ provider:
   memorySize: 128
   environment:
     TZ: Asia/Tokyo
-    SLACK_TOKEN: ${file(./myCustomFile.yml):slack_token}
+    SLACK_API_TOKEN: ${file(./myCustomFile.yml):slack_token}
     POST_CHANNEL: ${file(./myCustomFile.yml):post_channel}
     EXEC_USER_ID: ${file(./myCustomFile.yml):exec_user_id}
 
@@ -31,11 +31,11 @@ plugins:
 
 functions:
   main:
-    handler: src/main.lambda_handler
+    handler: src/main.handler
     timeout: 180
     events:
       - schedule:
-#         rate: cron(5 * * * ? *) #for test
+#         rate: cron(20 * * * ? *) #for test
          rate: cron(0 11 1 * ? *)
 
 custom: ${file(./myCustomFile.yml)}
