@@ -37,5 +37,8 @@ functions:
       - schedule:
 #         rate: cron(50 * * * ? *) #for test
          rate: cron(0 11 1 * ? *)
+      - http:
+          path: createAndArchive
+          method: post
 
 custom: ${file(./myCustomFile.yml)}
