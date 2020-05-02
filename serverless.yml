@@ -35,7 +35,7 @@ functions:
     timeout: 180
     events:
       - schedule:
-         rate: cron(30 * * * ? *) #for test
-#         rate: cron(0 11 1 * ? *)
+#         rate: cron(50 * * * ? *) #for test
+         rate: cron(0 11 1 * ? *)
 
 custom: ${file(./myCustomFile.yml)}
