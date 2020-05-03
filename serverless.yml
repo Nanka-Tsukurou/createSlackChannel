@@ -18,10 +18,6 @@ provider:
 package:
   exclude:
     - dist/**
-    - build.sh
-    - src/example.log
-    - src/example.py
-    - lambda_function.zip
     - myCustomFile.yml
 
 plugins:
@@ -40,5 +36,6 @@ functions:
       - http:
           path: createAndArchive
           method: post
+          async: true
 
 custom: ${file(./myCustomFile.yml)}
