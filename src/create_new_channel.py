@@ -12,7 +12,12 @@ loghandler = StreamHandler()
 loghandler.setFormatter(Formatter("%(asctime)s %(levelname)8s %(message)s"))
 logger.addHandler(loghandler)
 
-def create_new_channel(client) -> str:
+logger.info('Start processing.')
+client = slack.WebClient(token=os.environ['SLACK_API_TOKEN'])
+post_channel = os.environ['POST_CHANNEL']
+logger.info('Successfully read environmental variables.')
+
+def create_new_channel() -> str:
     logger.info('Start create channel process.')
     
     message = 'エラーが発生しました'

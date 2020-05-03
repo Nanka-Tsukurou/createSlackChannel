@@ -12,7 +12,12 @@ loghandler = StreamHandler()
 loghandler.setFormatter(Formatter("%(asctime)s %(levelname)8s %(message)s"))
 logger.addHandler(loghandler)
 
-def archive_old_channels(client) -> str:
+logger.info('Start processing.')
+client = slack.WebClient(token=os.environ['SLACK_API_TOKEN'])
+post_channel = os.environ['POST_CHANNEL']
+logger.info('Successfully read environmental variables.')
+
+def archive_old_channels() -> str:
     logger.info('Start archive process.')
 
     dt_now = datetime.datetime.now()

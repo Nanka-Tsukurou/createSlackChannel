@@ -30,6 +30,3 @@ def handler(event, lambda_context):
     except Exception as e:
         logger.error('An Error has occurred.')
         raise e 
-        
-if __name__ == "__main__":
-    handler('event', 'lambda_context')
