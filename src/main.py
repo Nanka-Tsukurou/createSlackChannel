@@ -21,9 +21,9 @@ logger.info('Successfully read environmental variables.')
 
 def handler(event, lambda_context):
     try:
-        message_create = create_new_channel.create_new_channel(client)
+        message_create = create_new_channel.create_new_channel()
         client.chat_postMessage(channel=post_channel, text=message_create)
-        message_archive = archive_old_channels.archive_old_channels(client)
+        message_archive = archive_old_channels.archive_old_channels()
         client.chat_postMessage(channel=post_channel, text=message_archive)
         logger.info('Finish processing.')
 
