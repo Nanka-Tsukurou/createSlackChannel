@@ -40,5 +40,6 @@ functions:
       - http:
           path: createAndArchive
           method: post
+          async: true
 
 custom: ${file(./myCustomFile.yml)}
