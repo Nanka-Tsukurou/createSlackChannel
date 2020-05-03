@@ -18,10 +18,6 @@ provider:
 package:
   exclude:
     - dist/**
-    - build.sh
-    - src/example.log
-    - src/example.py
-    - lambda_function.zip
     - myCustomFile.yml
 
 plugins:

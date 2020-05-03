@@ -1,9 +1,4 @@
 myCustomFile.yml
 dist/
-*.sh
-*.zip
-src/example*
-createSlackChannel/*
-handler.py
 node_modules
 .serverless
