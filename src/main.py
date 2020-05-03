@@ -11,7 +11,7 @@ import src.archive_old_channels as archive_old_channels
 logger = getLogger(__name__)
 logger.setLevel(DEBUG)
 loghandler = StreamHandler()
-loghandler.setFormatter(Formatter("%(asctime)s %(levelname)8s %(message)s"))
+loghandler.setFormatter(Formatter("%(asctime)s %(name)s %(levelname)8s %(message)s"))
 logger.addHandler(loghandler)
 
 logger.info('Start processing.')
@@ -29,4 +29,6 @@ def handler(event, lambda_context):
 
     except Exception as e:
         logger.error('An Error has occurred.')
+        message_error = "エラーが発生しました"
+        client.chat_postMessage(channel=post_channel, text=message_error)
         raise e 

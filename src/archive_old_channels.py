@@ -10,7 +10,7 @@ import re
 logger = getLogger(__name__)
 logger.setLevel(DEBUG)
 loghandler = StreamHandler()
-loghandler.setFormatter(Formatter("%(asctime)s %(levelname)8s %(message)s"))
+loghandler.setFormatter(Formatter("%(asctime)s %(name)s %(levelname)8s %(message)s"))
 logger.addHandler(loghandler)
 
 logger.info('Start processing.')
