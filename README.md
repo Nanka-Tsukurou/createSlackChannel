@@ -25,8 +25,8 @@
 3./createSlackChannel/myCustomfile.ymlを作成し、以下を記載
 ```
 slack_token: <slackのトークン>
-post_chennel: <＃実行結果を通知するslackのチャンネル名>
-exec_user_id: <slackの実行ユーザーID>
+post_chennel_prod: <＃実行結果を通知するslackのチャンネル名>
+exec_user_id_prod: <slackの実行ユーザーID>
 deployment_bucket: <2.で作成したS3バケットの名前>
 ```
 
