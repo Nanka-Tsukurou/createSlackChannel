@@ -16,7 +16,9 @@
 /createchannel
 ```
 [デプロイ]
+
 ※AWSのアカウントを持っていて、アクセスキーを取得していること
+
 ※slackのAPPを作成済みであること
 
 1.git clone
