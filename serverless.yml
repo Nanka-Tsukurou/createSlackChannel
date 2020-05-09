@@ -3,7 +3,8 @@ service: createslackchannel
 provider:
   name: aws
   runtime: python3.7
-  stage: prod
+  stage: dev  #for test
+ # stage: prod
   region: ap-northeast-1
   deploymentBucket: ${file(./myCustomFile.yml):deployment_bucket}
   logRetentionInDays: 7
@@ -12,10 +13,10 @@ provider:
   environment:
     TZ: Asia/Tokyo
     SLACK_API_TOKEN: ${file(./myCustomFile.yml):slack_token}
- #   POST_CHANNEL: ${file(./myCustomFile.yml):post_channel_dev}  # for test
-    POST_CHANNEL: ${file(./myCustomFile.yml):post_channel_prod}
- #   EXEC_USER_ID: ${file(./myCustomFile.yml):exec_user_id_dev}  # for test
-    EXEC_USER_ID: ${file(./myCustomFile.yml):exec_user_id_prod}
+    POST_CHANNEL: ${file(./myCustomFile.yml):post_channel_dev}  # for test
+ #  POST_CHANNEL: ${file(./myCustomFile.yml):post_channel_prod}
+    EXEC_USER_ID: ${file(./myCustomFile.yml):exec_user_id_dev}  # for test
+ #  EXEC_USER_ID: ${file(./myCustomFile.yml):exec_user_id_prod}
 
 package:
   exclude:
@@ -40,5 +41,8 @@ functions:
           path: createAndArchive
           method: post
           async: true
+          response:
+            headers:
+              Content-Type: "'application/json'"
 
 custom: ${file(./myCustomFile.yml)}
