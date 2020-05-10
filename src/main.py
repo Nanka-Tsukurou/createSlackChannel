@@ -55,7 +55,7 @@ def handler(event, lambda_context):
             'text':'error!'
         }
         er = requests.post(response_url, data=json.dumps(payload_error), headers=response_headers)
-        logger.debug("error_response:" + str(er.status_code) + ":" + r.text)
+        logger.debug("error_response:" + str(er.status_code) + ":" + er.text)
 
         logger.info('Error Response has been sent.')
         raise e 
