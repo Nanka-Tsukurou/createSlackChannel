@@ -22,8 +22,13 @@ post_channel = os.environ['POST_CHANNEL']
 logger.info('Successfully read environmental variables.')
 
 def handler(event, lambda_context):
-    response_url = event['body']['response_url']
-    response_headers = {'content-type': 'application/json'}
+    if 'body' in event: #スラッシュコマンドで呼ばれた場合
+        logger.info('This process is kicked by a slash command.')
+        response_url = event['body']['response_url']
+        response_headers = {'content-type': 'application/json'}
+    else: #定期実行で呼ばれた場合
+        logger.info('This process is kicked by a cron job.')
+    
     try:
         message_create = create_new_channel.create_new_channel()
         client.chat_postMessage(channel=post_channel, text=message_create)
