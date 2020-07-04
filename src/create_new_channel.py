@@ -17,6 +17,8 @@ client = slack.WebClient(token=os.environ['SLACK_API_TOKEN'])
 post_channel = os.environ['POST_CHANNEL']
 logger.info('Successfully read environmental variables.')
 
+ABEND_ERROR_TIMES = 10
+
 def create_new_channel() -> str:
     logger.info('Start create channel process.')
     
@@ -53,34 +55,42 @@ def create_new_channel() -> str:
         users = users_list['members']
         exec_user_id = os.environ['EXEC_USER_ID']
 
+        err_times = 0
         for user in users:
-            logger.info('Going to invite'+ user['id'] + ':' + user['name'] + '.')
-                
-            #自分自身は招待しない
-            if user['id'] == exec_user_id:
-                logger.info('myself.')
-                continue
-            #botは招待しない
-            if user['is_bot'] == True:
-                logger.info('is_bot.')
-                continue
-            #updated=0は招待しない エラーになる理由はわからない
-            if user['updated'] == 0:
-                logger.info('updated equal 0.')
-                continue
-            
-            #チャンネルに招待
-            dt_now = datetime.datetime.now()
-            time.sleep(1)
-            
-            ret = client.channels_invite(channel=new_channel['channel']['id'],user=user['id'])
-            logger.info('Invited'+ user['id'] + ':' + user['name'] + '.')
-            assert ret['ok'],'ユーザーの招待に失敗しました' + '(' + user['name'] + ')'
-
-        logger.info('Users are successfully invited.')
+            try:
+                invite(user)
+                time.sleep(1)
+            except:
+                err_times += 1
+                logger.info('Failed to invite'+ user['id'] + ':' + user['name'] + '.')
+                if err_times > ABEND_ERROR_TIMES:
+                    break
+                pass
     
     logger.info('Finish create channel process.')
     return message
- 
+    
+def invite(user):
+    logger.info('Going to invite'+ user['id'] + ':' + user['name'] + '.')
+    #自分自身は招待しない
+    if user['id'] == exec_user_id:
+        logger.info('myself.')
+        return
+    #botは招待しない
+    if user['is_bot'] == True:
+        logger.info('is_bot.')
+        return
+    #updated=0は招待しない エラーになる理由はわからない
+    if user['updated'] == 0:
+        logger.info('updated equal 0.')
+        return
+            
+    #チャンネルに招待
+    dt_now = datetime.datetime.now()
+    
+    ret = client.channels_invite(channel=new_channel['channel']['id'],user=user['id'])
+    logger.info('Invited'+ user['id'] + ':' + user['name'] + '.')
+    assert ret['ok'],'ユーザーの招待に失敗しました' + '(' + user['name'] + ')'
+
 if __name__ == "__main__":
     create_new_channel()
