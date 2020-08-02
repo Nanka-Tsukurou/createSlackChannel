@@ -53,26 +53,27 @@ def create_new_channel() -> str:
         assert users_list['ok'],'ユーザー一覧の取得に失敗しました'
         
         users = users_list['members']
-        exec_user_id = os.environ['EXEC_USER_ID']
 
         err_times = 0
         for user in users:
             try:
-                invite(user)
+                invite(new_channel,user)
                 time.sleep(1)
-            except:
+            except Exception as e:
                 err_times += 1
-                logger.info('Failed to invite'+ user['id'] + ':' + user['name'] + '.')
+                logger.warning('Failed to invite'+ user['id'] + ':' + user['name'] + '.')
+                logger.warning(e)
                 if err_times > ABEND_ERROR_TIMES:
                     break
-                pass
     
     logger.info('Finish create channel process.')
     return message
     
-def invite(user):
+def invite(new_channel,user):
     logger.info('Going to invite'+ user['id'] + ':' + user['name'] + '.')
+    
     #自分自身は招待しない
+    exec_user_id = os.environ['EXEC_USER_ID']
     if user['id'] == exec_user_id:
         logger.info('myself.')
         return
@@ -88,8 +89,7 @@ def invite(user):
     #チャンネルに招待
     dt_now = datetime.datetime.now()
     
-    ret = client.channels_invite(channel=new_channel['channel']['id'],user=user['id'])
-    logger.info('Invited'+ user['id'] + ':' + user['name'] + '.')
+    ret = client.conversations_invite(channel=new_channel['channel']['id'],users=user['id'])
     assert ret['ok'],'ユーザーの招待に失敗しました' + '(' + user['name'] + ')'
 
 if __name__ == "__main__":
