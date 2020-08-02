@@ -8,7 +8,7 @@ provider:
   region: ap-northeast-1
   deploymentBucket: ${file(./myCustomFile.yml):deployment_bucket}
   logRetentionInDays: 7
-  timeout: 60
+  timeout: 30
   memorySize: 128
   environment:
     TZ: Asia/Tokyo
@@ -32,7 +32,7 @@ plugins:
 functions:
   main:
     handler: src/main.handler
-    timeout: 30
+    timeout: 600
     events:
       - schedule:
 #         rate: cron(50 * * * ? *) #for test

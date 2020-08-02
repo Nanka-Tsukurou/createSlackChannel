@@ -61,11 +61,10 @@ def create_new_channel() -> str:
                 time.sleep(1)
             except Exception as e:
                 err_times += 1
-                logger.info('Failed to invite'+ user['id'] + ':' + user['name'] + '.')
-                logger.info(e)
+                logger.warning('Failed to invite'+ user['id'] + ':' + user['name'] + '.')
+                logger.warning(e)
                 if err_times > ABEND_ERROR_TIMES:
                     break
-                pass
     
     logger.info('Finish create channel process.')
     return message
