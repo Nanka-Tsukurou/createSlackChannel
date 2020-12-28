@@ -34,9 +34,9 @@ functions:
     handler: src/main.handler
     timeout: 600
     events:
-      - schedule:
-#         rate: cron(50 * * * ? *) #for test
-          rate: cron(00 2 1 * ? *)
+#      - schedule:
+#          rate: cron(50 * * * ? *) #for test
+#          rate: cron(00 2 1 * ? *)
       - http:
           path: createAndArchive
           method: post
